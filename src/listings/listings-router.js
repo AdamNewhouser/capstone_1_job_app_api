@@ -11,10 +11,11 @@ const serializeListing = listing => ({
     company_name: xss(listing.company_name),
     job_title: xss(listing.job_title),
     job_description: xss(listing.job_description),
-    pay: listing.pay,
-    required_skills: listing.required_skills,
-    additional_skills: listing.additional_skills,
+    pay: xss(listing.pay),
+    required_skills: xss(listing.required_skills),
+    additional_skills: xss(listing.additional_skills),
     date_listed: listing.date_listed,
+    user_id: listing.user_id
 })
 
 listingsRouter.route('/')
@@ -25,11 +26,43 @@ listingsRouter.route('/')
             })
             .catch(next)
     })
+    .post(jsonBodyParser, (req, res, next) => {
+        const { newListing } = req.body
+        for (const [key, value] of Object.entries(newListing))
+                if (value === null)
+                    return res.status(400).json({
+                        error: `Missing '${key}' in request body`
+                    })
+        ListingsService.insertListing(req.app.get('db'), newListing)
+            .then(listing => {
+                res
+                    .status(201)
+                    .location(path.posix.join(req.originalUrl, `/${listing.id}`))
+                    .json(listing)
+            })
+            .catch(next)
+    })
 
 listingsRouter.route('/:listingId')
     .all(checkListingExists)
     .get((req, res) => {
         res.json(res.listing)
+    })
+    .patch(jsonBodyParser, (req, res, next) => {
+        const { applicants } = req.body
+        const { listingId } = req.params.listingId
+        const listingToUpdate = { ...listingFields, applicants }
+        for (const [key, value] of Object.entries(listingToUpdate))
+            if (value === null) {
+                return res.status(400).json({
+                    error: { message: `Missing ${key} in request body` }
+                })
+            }
+        ListingsService.updateListing(req.get.app('db'), listingId, listingToUpdate)
+            .then(numRowsAffected => {
+                res.status(204).end()
+            })
+            .catch(next)
     })
 
 async function checkListingExists(req, res, next) {

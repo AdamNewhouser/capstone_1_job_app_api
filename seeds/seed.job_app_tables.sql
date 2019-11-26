@@ -20,7 +20,7 @@ VALUES
 INSERT INTO profiles (name, profile_tag, primary_industry, user_id)
 VALUES
     ('Kevin Malone', 'Me accounting. Me on time. Me become favorite employee.', 'Accounting', 1),
-    ('Dwight Scrute', 'I would describe myself in three words: Hardworking, Alpha-male, Jackhammer, Merciless, and Insatiable.', 'Sales', 2),
+    ('Dwight Schrute', 'I would describe myself in three words: Hardworking, Alpha-male, Jackhammer, Merciless, and Insatiable.', 'Sales', 2),
     ('Angela Martin', 'I am thorough and diligent. I always submit important documents on time.', 'Accounting', 3),
     ('Michael Scott', 'Would I rather be feared or loved? Easy. Both. I want people to be afraid of how much they love me.', 'Sales Management', 4),
     ('Creed Bratton', 'I have been involved in a number of cults, both as a leader and a follower. You have more fun as a follower, but you make more money as a leader.', 'Quality Assurance', 5),

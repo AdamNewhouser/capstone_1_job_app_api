@@ -14,7 +14,7 @@ const ListingsService = {
             .from('listings')
     },
     insertListing(db, newListing) {
-        return db.insert(newListing).into('listings')
+        return db.insert(newListing).into('listings').returning('*')
             .then(rows => {
                 return rows[0]
             })
@@ -27,7 +27,7 @@ const ListingsService = {
     deleteListing(db, id) {
         return db('listings').where({ id }).delete()
     },
-    updateProfile(db, id, newListingFields) {
+    updateListing(db, id, newListingFields) {
         return db('listings').where({ id }).update(newListingFields)
     }
 
