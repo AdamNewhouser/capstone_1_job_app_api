@@ -50,4 +50,13 @@ VALUES
     ('Dunder Mifflin', 'Scranton, PA', 'Sales', 'Thank you for your interest in a career at Dunder Mifflin. We are seeking an experienced Sales Rep who is a self-starter and used to working on commission.', '25k/year plus commission', '2+ years sales experience', 'Paper sales experience', 6),
     ('Dunder Mifflin', 'Scranton, PA', 'Regional Manager', 'Thank you for your interest in a career at Dunder Mifflin. We are seeking an experienced Office Manager who can organize and run the office.', '50k/year', '2+ years managerial experience', 'Paper sales experience', 6);
 
+INSERT INTO profile_images (image_url, profile_id)
+VALUES
+    ('https://upload.wikimedia.org/wikipedia/en/6/60/Office-1200-baumgartner1.jpg', 1),
+    ('https://upload.wikimedia.org/wikipedia/en/c/cd/Dwight_Schrute.jpg', 2),
+    ('https://upload.wikimedia.org/wikipedia/en/0/0b/Angela_Martin.jpg', 3),
+    ('https://upload.wikimedia.org/wikipedia/en/d/dc/MichaelScott.png', 4),
+    ('https://upload.wikimedia.org/wikipedia/en/c/cd/CreedBratton%28TheOffice%29.jpg', 5),
+    ('https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Dunder_Mifflin%2C_Inc.svg/800px-Dunder_Mifflin%2C_Inc.svg.png', 6);
+
 COMMIT;

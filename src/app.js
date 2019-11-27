@@ -6,7 +6,7 @@ const { NODE_ENV } = require('./config')
 const profilesRouter = require('./profiles/profiles-router')
 const listingsRouter = require('./listings/listings-router')
 const authRouter = require('./auth/auth-router')
-
+const applicantsRouter = require('./applicants/applicants-router')
 
 const app = express();
 
@@ -19,6 +19,7 @@ app.use(cors());
 app.use('/api/profiles', profilesRouter)
 app.use('/api/listings', listingsRouter)
 app.use('/api/auth', authRouter)
+app.use('/api/applicants', applicantsRouter)
 
 app.use(function errorHandler(error, req, res, next) {
     let response

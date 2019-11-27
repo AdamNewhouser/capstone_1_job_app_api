@@ -1,9 +1,21 @@
 const ProfilesService = {
-    getMicroProfiles(db) {
-        return db.select('*').from('profiles')
+    getEmployerProfiles(db) {
+        return db
+            .from('profiles')
+            .select(
+            'profiles.id',
+            'profiles.name',
+            'profiles.profile_tag',
+            'profiles.primary_industry',
+            'profiles.date_created',
+            'profile_images.image_url'
+            )
+            .join('profile_images', 'profiles.id', 'profile_images.profile_id')
     },
-    getFullProfiles(db) {
-        return db.select(
+    getCandidateProfiles(db) {
+        return db
+            .from('profiles')
+            .select(
             'profiles.id',
             'profiles.name',
             'profiles.profile_tag',
@@ -21,12 +33,13 @@ const ProfilesService = {
             'education.school_name',
             'education.degree',
             'education.length_of_enrollment',
-            'education.location as ed_location'
+            'education.location as ed_location',
+            'profile_images.image_url'
             )
-            .from('profiles')
             .join('users', 'profiles.user_id', 'users.id')
             .join('employment', 'profiles.id', 'employment.profile_id')
             .join('education', 'profiles.id', 'education.profile_id')
+            .join('profile_images', 'profiles.id', 'profile_images.profile_id')
             
     },
     insertProfile(db, newProfile) {
@@ -36,18 +49,24 @@ const ProfilesService = {
             })
     },
     getById(db, id) {
-        return ProfilesService.getFullProfiles(db)
+        return ProfilesService.getCandidateProfiles(db)
             .where('users.id', id)
             .first()
+    },
+    getEmployerById(db, id) {
+        return ProfilesService.getEmployerProfiles(db)
+            .where('profiles.id', id)
+            .first() 
     },
     deleteProfile(db, id) {
         return db('profiles').where({ id }).delete()
     },
     updateProfile(db, id, newProfileFields) {
         return db('profiles').where({ id }).update(newProfileFields)
+    },
+    getApplicantsByUserId(db, userId) {
+        return db.select('*').from('applicants').where('applicants.user_id', userId)
     }
-
-
 }
 
 module.exports = ProfilesService

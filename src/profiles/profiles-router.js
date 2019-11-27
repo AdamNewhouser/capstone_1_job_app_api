@@ -15,29 +15,44 @@ const serializeProfile = profile => ({
     user_id: profile.user_id,
 })
 
+
+
 profilesRouter.route('/:profileId')
-    .all(checkThingExists)
+    .all(checkProfileExists)
     .get((req, res, next) => {
-        res.json(res.profile)
+        return res.json(res.profile)
+    })
+    .get((req, res, next) => {
+        ProfilesService.getApplicantsByUserId(req.params.profileId)
+            .then(applicants => {
+                res.json(applicants)
+            })
     })
 
-async function checkThingExists(req, res, next) {
+
+async function checkProfileExists(req, res, next) {
     try {
-        const profile = await ProfilesService.getById(
-            req.app.get('db'),
-            req.params.profileId
-        )
-
-        if (!profile)
-            return res.status(404).json({
-                error: `Profile doesn't exist`
-            })
-
-        res.profile = profile
-        next()
+        if (req.headers.usertype === 'employer') {
+            const profile = await ProfilesService.getEmployerById(req.app.get('db'), req.params.profileId)
+            if (!profile)
+                return res.status(404).json({
+                    error: `Profile doesn't exist`
+                })
+            res.profile = profile
+            next()
+        } else {
+            const profile = await ProfilesService.getById(req.app.get('db'), req.params.profileId)
+            if (!profile)
+                return res.status(404).json({
+                    error: `Profile doesn't exist`
+                })
+            res.profile = profile
+            next()
+        }
     } catch (error) {
         next(error)
     }
 }
+
 
 module.exports = profilesRouter

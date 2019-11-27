@@ -20,11 +20,19 @@ const serializeListing = listing => ({
 
 listingsRouter.route('/')
     .get((req, res, next) => {
-        ListingsService.getListings(req.app.get('db'))
+        if (req.headers.userid) {
+            ListingsService.getListingsByEmployerId(req.app.get('db'), req.headers.userid)
             .then(listings => {
                 res.json(listings)
             })
             .catch(next)
+        } else {
+            ListingsService.getListings(req.app.get('db'))
+            .then(listings => {
+                res.json(listings)
+            })
+            .catch(next)
+        }
     })
     .post(jsonBodyParser, (req, res, next) => {
         const { newListing } = req.body
@@ -48,19 +56,17 @@ listingsRouter.route('/:listingId')
     .get((req, res) => {
         res.json(res.listing)
     })
-    .patch(jsonBodyParser, (req, res, next) => {
-        const { applicants } = req.body
-        const { listingId } = req.params.listingId
-        const listingToUpdate = { ...listingFields, applicants }
-        for (const [key, value] of Object.entries(listingToUpdate))
-            if (value === null) {
-                return res.status(400).json({
-                    error: { message: `Missing ${key} in request body` }
-                })
-            }
-        ListingsService.updateListing(req.get.app('db'), listingId, listingToUpdate)
-            .then(numRowsAffected => {
-                res.status(204).end()
+    .post(jsonBodyParser, checkForDuplicateApplicant)
+    .post(jsonBodyParser, (req, res, next) => {
+        const applicant = req.body
+        for (const [key, value] of Object.entries(applicant))
+            if (value === null)
+            return res.status(400).json({
+                error: `Missing '${key}' in request body`
+            })
+        ListingsService.insertApplicant(req.app.get('db'), applicant)
+            .then(applicant => {
+                res.status(201).json(applicant)
             })
             .catch(next)
     })
@@ -78,6 +84,21 @@ async function checkListingExists(req, res, next) {
             })
 
         res.listing = listing
+        next()
+    } catch (error) {
+        next(error)
+    }
+}
+
+async function checkForDuplicateApplicant(req, res, next) {
+    try {
+        const applicants = await ListingsService.getApplicantsForValidation(req.app.get('db'), req.params.listingId)
+        applicants.map(applicant => {
+            if (applicant.profile_id === req.body.profile_id)
+                return res.status(400).json({
+                    error: `Profile already in database`
+                })
+        })
         next()
     } catch (error) {
         next(error)
