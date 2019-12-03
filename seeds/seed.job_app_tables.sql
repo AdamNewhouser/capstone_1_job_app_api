@@ -57,6 +57,6 @@ VALUES
     ('https://upload.wikimedia.org/wikipedia/en/0/0b/Angela_Martin.jpg', 3),
     ('https://upload.wikimedia.org/wikipedia/en/d/dc/MichaelScott.png', 4),
     ('https://upload.wikimedia.org/wikipedia/en/c/cd/CreedBratton%28TheOffice%29.jpg', 5),
-    ('https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Dunder_Mifflin%2C_Inc.svg/800px-Dunder_Mifflin%2C_Inc.svg.png', 6);
+    ('https://images-na.ssl-images-amazon.com/images/I/61v20Ec5iwL._SX425_.jpg', 6);
 
 COMMIT;
