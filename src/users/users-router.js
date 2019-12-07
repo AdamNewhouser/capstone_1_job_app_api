@@ -6,17 +6,18 @@ const UsersService = require('./users-service')
 
 usersRouter
     .post('/', jsonBodyParser, (req, res, next) => {
-        const { password, email, phone, user_name, user_type } = req.body
-        for (const field of ['email', 'phone', 'user_name', 'password', 'user_type'])
-            if (!req.body[field])
+        const { email, phone, user_name, password, user_type } = req.body.user
+        for (const [key, value] of Object.entries(req.body))
+            if (value == null)
                 return res.status(400).json({
-                    error: `Missing '${field}' in request body`
+                    error: `Missing '${key}' in request body`
                 })
         const passwordError = UsersService.validatePassword(password)
         if (passwordError)
             return res.status(400).json({ error: passwordError })
 
         UsersService.hasUserWithEmail(req.app.get('db'), email)
+            .then(res => console.log(res))    
             .then(hasUserWithEmail => {
                 if (hasUserWithEmail)
                     return res.status(400).json({ error: `Email already in use` })
@@ -30,6 +31,7 @@ usersRouter
                             password: hashedPassword,
                             user_type,
                         }
+                        console.log(newUser)
                         return UsersService.insertUser(req.app.get('db'), newUser)
                             .then(user => {
                                 res.status(201)

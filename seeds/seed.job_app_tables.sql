@@ -24,7 +24,7 @@ VALUES
     ('Angela Martin', 'I am thorough and diligent. I always submit important documents on time.', 'Accounting', 3),
     ('Michael Scott', 'Would I rather be feared or loved? Easy. Both. I want people to be afraid of how much they love me.', 'Sales Management', 4),
     ('Creed Bratton', 'I have been involved in a number of cults, both as a leader and a follower. You have more fun as a follower, but you make more money as a leader.', 'Quality Assurance', 5),
-    ('Dunder Mifflin', 'We are a mid-level paper supply company with branches all across the northeastern United States. We offer a personal buying experience that you just do not get with the large paper supply chains.', 'Paper Sales and Service', 6);
+    ('Dunder Mifflin', 'We are a mid-level paper supply company with branches all across the northeastern United States.', 'Paper Sales and Service', 6);
 
 INSERT INTO employment (company_name, job_title, job_description, length_of_duty, location, supervisor_name, supervisor_phone, profile_id)
 VALUES
@@ -50,13 +50,13 @@ VALUES
     ('Dunder Mifflin', 'Scranton, PA', 'Sales', 'Thank you for your interest in a career at Dunder Mifflin. We are seeking an experienced Sales Rep who is a self-starter and used to working on commission.', '25k/year plus commission', '2+ years sales experience', 'Paper sales experience', 6),
     ('Dunder Mifflin', 'Scranton, PA', 'Regional Manager', 'Thank you for your interest in a career at Dunder Mifflin. We are seeking an experienced Office Manager who can organize and run the office.', '50k/year', '2+ years managerial experience', 'Paper sales experience', 6);
 
-INSERT INTO profile_images (image_url, profile_id)
+INSERT INTO profile_images (image_url, profile_id, user_id)
 VALUES
-    ('https://upload.wikimedia.org/wikipedia/en/6/60/Office-1200-baumgartner1.jpg', 1),
-    ('https://upload.wikimedia.org/wikipedia/en/c/cd/Dwight_Schrute.jpg', 2),
-    ('https://upload.wikimedia.org/wikipedia/en/0/0b/Angela_Martin.jpg', 3),
-    ('https://upload.wikimedia.org/wikipedia/en/d/dc/MichaelScott.png', 4),
-    ('https://upload.wikimedia.org/wikipedia/en/c/cd/CreedBratton%28TheOffice%29.jpg', 5),
-    ('https://images-na.ssl-images-amazon.com/images/I/61v20Ec5iwL._SX425_.jpg', 6);
+    ('https://upload.wikimedia.org/wikipedia/en/6/60/Office-1200-baumgartner1.jpg', 1, 1),
+    ('https://upload.wikimedia.org/wikipedia/en/c/cd/Dwight_Schrute.jpg', 2, 2),
+    ('https://upload.wikimedia.org/wikipedia/en/0/0b/Angela_Martin.jpg', 3, 3),
+    ('https://upload.wikimedia.org/wikipedia/en/d/dc/MichaelScott.png', 4, 4),
+    ('https://upload.wikimedia.org/wikipedia/en/c/cd/CreedBratton%28TheOffice%29.jpg', 5, 5),
+    ('https://images-na.ssl-images-amazon.com/images/I/61v20Ec5iwL._SX425_.jpg', 6, 6);
 
 COMMIT;

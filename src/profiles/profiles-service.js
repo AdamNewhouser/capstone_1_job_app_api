@@ -34,28 +34,45 @@ const ProfilesService = {
             'education.degree',
             'education.length_of_enrollment',
             'education.location as ed_location',
-            'profile_images.image_url'
+            
             )
             .join('users', 'profiles.user_id', 'users.id')
             .join('employment', 'profiles.id', 'employment.profile_id')
             .join('education', 'profiles.id', 'education.profile_id')
-            .join('profile_images', 'profiles.id', 'profile_images.profile_id')
             
     },
     insertProfile(db, newProfile) {
-        return db.insert(newProfile).into('profiles')
+        return db.insert(newProfile).into('profiles').returning('*')
+            .then(rows => {
+                return rows[0]
+            })
+    },
+    insertEducation(db, newEd) {
+        return db.insert(newEd).into('education').returning('*')
+            .then(rows => {
+                return rows[0]
+            })
+    },
+    insertEmployment(db, newEmp) {
+        return db.insert(newEmp).into('employment').returning('*')
+            .then(rows => {
+                return rows[0]
+            })
+    },
+    insertImage(db, newImage) {
+        return db.insert(newImage).into('profile_images').returning('*')
             .then(rows => {
                 return rows[0]
             })
     },
     getById(db, id) {
         return ProfilesService.getCandidateProfiles(db)
-            .where('users.id', id)
+            .where('profiles.user_id', id)
             .first()
     },
     getEmployerById(db, id) {
         return ProfilesService.getEmployerProfiles(db)
-            .where('profiles.id', id)
+            .where('profiles.user_id', id)
             .first() 
     },
     deleteProfile(db, id) {
@@ -66,6 +83,17 @@ const ProfilesService = {
     },
     getApplicantsByUserId(db, userId) {
         return db.select('*').from('applicants').where('applicants.user_id', userId)
+    },
+    getImageByUserId(db, id) {
+        return db.select('profile_images.image_url').from('profile_images').where('profile_images.user_id', id)
+    },
+    getImageByProfileId(db, id) {
+
+    },
+    getProfileByPath(db, id) {
+        return db.select(
+            ''
+        )
     }
 }
 
