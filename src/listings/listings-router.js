@@ -1,6 +1,7 @@
 const path = require('path')
 const express = require('express')
 const ListingsService = require('./listings-service')
+const ProfilesService = require('../profiles/profiles-service')
 const { requireAuth } = require('../middleware/jwt-auth')
 const listingsRouter = express.Router()
 const jsonBodyParser = express.json()
@@ -20,12 +21,14 @@ const serializeListing = listing => ({
 
 listingsRouter.route('/')
     .get((req, res, next) => {
+        //gets only employer listings
         if (req.headers.userid) {
             ListingsService.getListingsByEmployerId(req.app.get('db'), req.headers.userid)
             .then(listings => {
                 res.json(listings)
             })
             .catch(next)
+        //gets all listings for candidate
         } else {
             ListingsService.getListings(req.app.get('db'))
             .then(listings => {
@@ -34,6 +37,7 @@ listingsRouter.route('/')
             .catch(next)
         }
     })
+    //posts new listing
     .post(jsonBodyParser, (req, res, next) => {
         const { newListing } = req.body
         for (const [key, value] of Object.entries(newListing))
@@ -53,10 +57,12 @@ listingsRouter.route('/')
 
 listingsRouter.route('/:listingId')
     .all(checkListingExists)
+    //gets a single listing
     .get((req, res) => {
         res.json(res.listing)
     })
     .post(jsonBodyParser, checkForDuplicateApplicant)
+    //posts a new listing
     .post(jsonBodyParser, (req, res, next) => {
         const applicant = req.body
         for (const [key, value] of Object.entries(applicant))
@@ -70,6 +76,43 @@ listingsRouter.route('/:listingId')
             })
             .catch(next)
     })
+    //edit listing
+    .patch(jsonBodyParser, (req, res, next) => {
+        console.log(req.body)
+        const updatedListing = req.body.updatedListing
+        const listingId = req.body.listing_id 
+        for (const [key, value] of Object.entries(updatedListing))
+            if (value === null)
+            return res.status(400).json({
+                error: `Missing '${key}' in request body`
+            })
+        ListingsService.updateListing(req.app.get('db'), listingId, updatedListing)
+            .then(updated => {
+                res.status(201).json(updatedListing)
+            })
+            .catch(next)
+    })
+
+listingsRouter.route('/applicants')
+    //gets the applicants for a particular listing
+    .get((req, res) => {
+        ListingsService.getApplicantsForValidation(req.app.get('db'), req.headers.listingId)
+            .then(apps => {
+                console.log(apps)
+                res.json(apps)
+            })
+    })
+
+listingsRouter.route('/:listingId/profiles')
+    //gets the profile data for employers to see applicant profile
+    .get((req, res, next) => {
+    console.log(req.headers.profileid);
+    ProfilesService.getMicro(req.app.get("db"), req.headers.profileid)
+        .then(response => {
+            res.json(response)
+        })
+        .catch(next)
+    });
 
 async function checkListingExists(req, res, next) {
     try {

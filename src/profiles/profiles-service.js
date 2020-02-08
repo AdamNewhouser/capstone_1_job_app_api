@@ -81,6 +81,15 @@ const ProfilesService = {
     updateProfile(db, id, newProfileFields) {
         return db('profiles').where({ id }).update(newProfileFields)
     },
+    updatePersonal(db, id, newProfileFields) {
+        return db('profiles')
+            .where({ id })
+            .update(newProfileFields)
+            .returning('*')
+            .then(rows => {
+                return rows[0]
+            })
+    },
     getApplicantsByUserId(db, userId) {
         return db.select('*').from('applicants').where('applicants.user_id', userId)
     },
@@ -88,12 +97,41 @@ const ProfilesService = {
         return db.select('profile_images.image_url').from('profile_images').where('profile_images.user_id', id)
     },
     getImageByProfileId(db, id) {
-
+        return db.select('profile_images.image_url').from('profile_images').where('profile_images.profile_id', id)
     },
     getProfileByPath(db, id) {
         return db.select(
             ''
         )
+    },
+    getMicro(db, id) {
+        return db.from('profiles').select('profiles.id',
+        'profiles.name',
+        'profiles.profile_tag',
+        'profiles.primary_industry',
+        'profiles.date_created', 
+        'users.email', 
+        'users.phone',
+        'employment.company_name',
+        'employment.job_title',
+        'employment.job_description',
+        'employment.length_of_duty',
+        'employment.location',
+        'employment.supervisor_name',
+        'employment.supervisor_phone',
+        'education.school_name',
+        'education.degree',
+        'education.length_of_enrollment',
+        'education.location as ed_location',
+        )
+        .join('users', 'profiles.user_id', 'users.id')
+        .join('employment', 'profiles.id', 'employment.profile_id')
+        .join('education', 'profiles.id', 'education.profile_id')
+        .where('profiles.id', id)
+        .returning('*')
+        .then(rows => {
+            return rows[0]
+        })
     }
 }
 

@@ -5,6 +5,7 @@ const jsonBodyParser = express.json()
 const UsersService = require('./users-service')
 
 usersRouter
+    //posts initial user information to the database after registration
     .post('/', jsonBodyParser, (req, res, next) => {
         const { email, phone, user_name, password, user_type } = req.body.user
         for (const [key, value] of Object.entries(req.body))
@@ -16,8 +17,7 @@ usersRouter
         if (passwordError)
             return res.status(400).json({ error: passwordError })
 
-        UsersService.hasUserWithEmail(req.app.get('db'), email)
-            .then(res => console.log(res))    
+        UsersService.hasUserWithEmail(req.app.get('db'), email)   
             .then(hasUserWithEmail => {
                 if (hasUserWithEmail)
                     return res.status(400).json({ error: `Email already in use` })
@@ -31,7 +31,6 @@ usersRouter
                             password: hashedPassword,
                             user_type,
                         }
-                        console.log(newUser)
                         return UsersService.insertUser(req.app.get('db'), newUser)
                             .then(user => {
                                 res.status(201)
