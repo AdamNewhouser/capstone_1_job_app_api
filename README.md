@@ -1,6 +1,51 @@
-# Express Boilerplate!
+# Job App Server
 
-This is a boilerplate project used for starting new projects!
+live-app: https://job-app.adamnewhouser.now.sh
+
+client repo: https://github.com/AdamNewhouser/capstone_1_job_app
+
+server repo: https://github.com/AdamNewhouser/capstone_1_job_app_api
+
+Demo Accounts:
+
+    1.) Michael Scott - candidate account
+        email: michaelscarn@hotmail.com
+        password: michaelpassword123
+
+    2.) Dunder Mifflin - employer account
+        email: hiring@dundermifflin.com
+        password: dundermifflinpassword123
+
+
+Summary:
+
+    The Job app is a combination of a corporate social media site and job board that allows you to create a unique profile and will eventually allow you to interact with your peers and employers. Employers may also post new jobs to the job board and will eventually be able to interact with their applicants.
+
+    When registering, please designate if you plan to sign up as a candidate or an employer. Both candidates and employers build unique profiles but the difference between the two is that only candidates may apply for any job listings and only employers may create job listings.
+
+    When applying for a job as a candidate, all it takes is one-click on the apply button within any listing. Once clicked, all of the necessary information is sent to the employer for them to make a final decision! 
+    
+API Documentation:
+
+    API Base URL: https://dry-inlet-84566.herokuapp.com/api
+
+    - GET /profiles
+    - GET /listings
+    - GET /listings/{listing-id}
+    - POST /users
+    - POST /auth/login
+    - POST /listings
+    - POST /listings/{listing-id}
+    - POST /profiles/{profile-id}
+    - POST /profiles/{profile-id}/{profile-image}
+    - POST /profiles/{profile-id}/employment
+    - POST /profiles/{profile-id}/education
+    
+Tech: Node.js
+
+Screens:
+
+
 
 ## Set up
 
