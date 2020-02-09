@@ -45,6 +45,18 @@ Tech: Node.js
 
 Screens:
 
+![job-app-landing](https://user-images.githubusercontent.com/53315616/74110917-72028c00-4b5e-11ea-9b09-8028dda88439.png)
+
+![job-app-register](https://user-images.githubusercontent.com/53315616/74111028-5481f200-4b5f-11ea-9b64-248f2d14635e.png)
+
+![job-app-login](https://user-images.githubusercontent.com/53315616/74111032-5b106980-4b5f-11ea-8df1-e9ec9c8e8518.png)
+
+![job-app-profile](https://user-images.githubusercontent.com/53315616/74111038-6368a480-4b5f-11ea-97f6-6933c21ce89f.png)
+
+![job-app-listings](https://user-images.githubusercontent.com/53315616/74111042-70859380-4b5f-11ea-802a-810d834373bb.png)
+
+![job-app-listing-page](https://user-images.githubusercontent.com/53315616/74111050-77aca180-4b5f-11ea-8c62-fdf0a95716f5.png)
+
 
 
 ## Set up
